@@ -14,7 +14,7 @@
             <th>Opções</th>
         </tr>
 
-        @foreach($produtos as $p)       
+        @foreach($produtos as $p)
         <tr class="{{ $p->quantidade <= 2 ? 'danger' : '' }}">
             <td>{{ $p->nome }}</td>
             <td>{{ $p->valor }}</td>
@@ -30,6 +30,9 @@
                 <a href="/produtos/remove/{{$p->id}}">
                     <span class="glyphicon glyphicon-search" aria-hidden="true" >
                     Remover</span>
+                </a> |
+                <a href="{{action('ProdutoController@downloadPDF', $p->id)}}">
+                    PDF
                 </a>
             </td>
         </tr>

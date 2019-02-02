@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Request;
 use Validator;
 use App\Produto;
+use PDF;
 use App\Http\Requests\ProdutoRequest;
 
 class ProdutoController extends Controller {
@@ -25,7 +26,7 @@ class ProdutoController extends Controller {
         $produto = Produto::find($id);
 
         return view('detalhes')->with('p', $produto);
-        
+
     }
 
     public function novo() {
@@ -40,7 +41,7 @@ class ProdutoController extends Controller {
         // $valor = Request::input('valor');
         // $quantidade = Request::input('quantidade');
         // $descricao = Request::input('descricao');
-        //DB::insert('insert into produtos (nome, valor, descricao, quantidade) values (?,?,?,?)', 
+        //DB::insert('insert into produtos (nome, valor, descricao, quantidade) values (?,?,?,?)',
         //array($nome, $valor, $descricao, $quantidade));
 
         //0.2
@@ -53,8 +54,8 @@ class ProdutoController extends Controller {
 
         //0.3
         // $params = Request::all();
-        // $produto = new Produto($params);  
-        // $produto->save();        
+        // $produto = new Produto($params);
+        // $produto->save();
 
         //0.4 - Criando o produto a partir de todos os dados da requisição
         Produto::create($request->all());
@@ -64,7 +65,7 @@ class ProdutoController extends Controller {
 
     //public function remove () {
     public function remove ($id) {
-        
+
         // Pegando o id do produto na requisição
         //$id = Request::route('id');
 
@@ -74,4 +75,11 @@ class ProdutoController extends Controller {
         //return redirect('/produtos');
         return redirect()->action('ProdutoController@lista');
     }
+
+    public function downloadPDF ($id) {
+        $produto = Produto::find($id);
+        $pdf = PDF::loadView('pdf', compact('produto'));
+        return $pdf->download('invoice.pdf');
+    }
+
 }
